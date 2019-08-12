@@ -1,9 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
+import { boardContext } from './App'
+
+
 
 
 
 
 const Space = (props) => {
+
+    const { status, setStatus, board, setBoard, turn, setTurn } = useContext(boardContext);
 
       useEffect(() => {
 
@@ -12,67 +17,70 @@ const Space = (props) => {
     setTimeout(() => {
         
     
-        if ((props.board.topLeft === 'x' && props.board.topMid === 'x' && props.board.topRight === 'x') ||
-            (props.board.midLeft === 'x' && props.board.midMid === 'x' && props.board.midRight === 'x') ||
-            (props.board.botLeft === 'x' && props.board.botMid === 'x' && props.board.botRight === 'x') ||
-            (props.board.topLeft === 'x' && props.board.midMid === 'x' && props.board.botRight === 'x') ||
-            (props.board.topRight === 'x' && props.board.midMid === 'x' && props.board.botLeft === 'x') ||
-            (props.board.topLeft === 'x' && props.board.midLeft === 'x' && props.board.botLeft === 'x') ||
-            (props.board.topMid === 'x' && props.board.midMid === 'x' && props.board.botMid === 'x') ||
-            (props.board.topRight === 'x' && props.board.midRight === 'x' && props.board.botRight === 'x') ||
-            (props.board.topLeft === 'o' && props.board.topMid === 'o' && props.board.topRight === 'o') ||
-            (props.board.midLeft === 'o' && props.board.midMid === 'o' && props.board.midRight === 'o') ||
-            (props.board.botLeft === 'o' && props.board.botMid === 'o' && props.board.botRight === 'o') ||
-            (props.board.topLeft === 'o' && props.board.midMid === 'o' && props.board.botRight === 'o') ||
-            (props.board.topRight === 'o' && props.board.midMid === 'o' && props.board.botLeft === 'o') ||
-            (props.board.topLeft === 'o' && props.board.midLeft === 'o' && props.board.botLeft === 'o') ||
-            (props.board.topMid === 'o' && props.board.midMid === 'o' && props.board.botMid === 'o') ||
-            (props.board.topRight === 'o' && props.board.midRight === 'o' && props.board.botRight === 'o')){
+        if ((board.topLeft === 'x' && board.topMid === 'x' && board.topRight === 'x') ||
+            (board.midLeft === 'x' && board.midMid === 'x' && board.midRight === 'x') ||
+            (board.botLeft === 'x' && board.botMid === 'x' && board.botRight === 'x') ||
+            (board.topLeft === 'x' && board.midMid === 'x' && board.botRight === 'x') ||
+            (board.topRight === 'x' && board.midMid === 'x' && board.botLeft === 'x') ||
+            (board.topLeft === 'x' && board.midLeft === 'x' && board.botLeft === 'x') ||
+            (board.topMid === 'x' && board.midMid === 'x' && board.botMid === 'x') ||
+            (board.topRight === 'x' && board.midRight === 'x' && board.botRight === 'x')){
+                setStatus('X Won!');
+            } else if (
+            (board.topLeft === 'o' && board.topMid === 'o' && board.topRight === 'o') ||
+            (board.midLeft === 'o' && board.midMid === 'o' && board.midRight === 'o') ||
+            (board.botLeft === 'o' && board.botMid === 'o' && board.botRight === 'o') ||
+            (board.topLeft === 'o' && board.midMid === 'o' && board.botRight === 'o') ||
+            (board.topRight === 'o' && board.midMid === 'o' && board.botLeft === 'o') ||
+            (board.topLeft === 'o' && board.midLeft === 'o' && board.botLeft === 'o') ||
+            (board.topMid === 'o' && board.midMid === 'o' && board.botMid === 'o') ||
+            (board.topRight === 'o' && board.midRight === 'o' && board.botRight === 'o')){
             
-            props.setStatus('game over');
+            setStatus('O Won!');
         } else {
             if (
                 
-                Object.values(props.board)[0] !=='-' &&
-                Object.values(props.board)[1] !=='-' &&
-                Object.values(props.board)[2] !=='-' &&
-                Object.values(props.board)[3] !=='-' &&
-                Object.values(props.board)[4] !=='-' &&
-                Object.values(props.board)[5] !=='-' &&
-                Object.values(props.board)[6] !=='-' &&
-                Object.values(props.board)[7] !=='-' &&
-                Object.values(props.board)[8] !=='-'
-                ){
-                    props.setStatus('Tie Game')
-                    }
+                Object.values(board)[0] !=='-' &&
+                Object.values(board)[1] !=='-' &&
+                Object.values(board)[2] !=='-' &&
+                Object.values(board)[3] !=='-' &&
+                Object.values(board)[4] !=='-' &&
+                Object.values(board)[5] !=='-' &&
+                Object.values(board)[6] !=='-' &&
+                Object.values(board)[7] !=='-' &&
+                Object.values(board)[8] !=='-'
+                ) {
+                    setStatus('Tie Game!')
+                }
         }
-    }, 50);
+    }, 10);
 
-    },[props.board, props])
+    },[board])
 
   
     
 
     const clickHandler = (target) => {
-        if(props.status !== 'game over'){
-            if (target.target.innerHTML !== '-'){
-            }else {
-            props.setBoard({...props.board, [props.name]: props.turn})
-                if (props.turn === 'x') {
-                    props.setTurn('o')
-                    
-                    
-                }else {
-                    props.setTurn('x')
+        if(status === 'game in process') {
+            if (target.target.innerHTML !== '-') {
+                console.log('space taken')
+            } else {
+                setBoard({...board, [props.name]: turn})
+                    if (turn === 'x') {
+                        setTurn('o')  
+                    }else {
+                        setTurn('x')
+                    }
                 }
-            }
+        } else {
+            console.log('game over')
         }
   }
 
 
 
     return (
-        <div onClick={(target) => clickHandler(target)} className={props.className}>{props.board[`${props.name}`]}</div>
+        <div onClick={(target) => clickHandler(target)} className={props.className}>{board[`${props.name}`]}</div>
     )
 }
 export default Space;
